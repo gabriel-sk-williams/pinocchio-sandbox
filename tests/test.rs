@@ -25,7 +25,7 @@ use solana_sdk::{
 
 
 #[tokio::test]
-async fn test_versus_contract() {
+async fn test_contract() {
 
 }
 */

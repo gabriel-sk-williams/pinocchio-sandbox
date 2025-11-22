@@ -1,10 +1,17 @@
 
 
+use crate::state::{Contract}; // , ApprovalState};
+
+use borsh::{BorshDeserialize, BorshSerialize};
+
+use pinocchio::{
+    program_error::ProgramError,
+    msg,
+};
 
 
 pub enum WagerInstruction {
-	GetWager,
-	//CreateWager { contract: Wager}
+	CreateContract { contract: Contract},
 }
 
 impl WagerInstruction {
@@ -13,21 +20,16 @@ impl WagerInstruction {
         let (&variant, rest) = input
             .split_first()
             .ok_or(ProgramError::InvalidInstructionData)?;
-
-        msg!("input {:?}", input);
  
         // Match instruction type and parse remaining bytes based on variant
         match variant {
             0 => {
-                Ok(Self::GetWager)
-            }
-            /*
-            1 => {
-                let versus_contract = VersusContract::try_from_slice(
+                let contract = Contract::try_from_slice(
                     &rest).map_err(|_| ProgramError::InvalidInstructionData)?;
 
-                Ok(Self::CreateWager { contract: versus_contract })
+                Ok(Self::CreateContract { contract: contract })
             }
+            /*
             2 => {
                 let amount = u64::try_from_slice(rest)
                     .map_err(|_| ProgramError::InvalidInstructionData)?;
